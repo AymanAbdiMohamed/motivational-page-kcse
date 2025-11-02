@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KCSE — Good Luck!</title>
+  <style>
+    :root{
+      --bg1:#0f172a; /* deep navy */
+      --bg2:#0b3d91; /* blue */
+      --accent:#ffd166; /* gold */
+      --card:#ffffff0d;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.02);
+      --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--font-sans);
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(255,255,255,0.02), transparent), linear-gradient(135deg,var(--bg1),var(--bg2));
+      color:#fff;
+      display:grid;
+      place-items:center;
+      padding:32px;
+    }
+
+    .card{
+      width:min(920px,96%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:18px;
+      padding:30px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.04);
+    }
+
+    header{
+      display:flex;align-items:center;gap:18px;
+    }
+    .logo{
+      width:78px;height:78px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#ff9f1c);display:grid;place-items:center;color:#07203b;font-weight:700;font-size:20px;box-shadow:0 6px 18px rgba(0,0,0,0.4);
+    }
+
+    h1{margin:0;font-size:40px;letter-spacing:-1px}
+    p.lead{margin:8px 0 0;color:#dbeafe}
+
+    .message{
+      margin-top:20px;
+      display:flex;gap:24px;align-items:center;
+    }
+    .left{flex:1}
+    .right{width:240px;text-align:center}
+
+    .card .btn{
+      display:inline-block;padding:12px 18px;border-radius:999px;background:linear-gradient(90deg,var(--accent),#ff9f1c);color:#07203b;font-weight:700;text-decoration:none;box-shadow:0 8px 18px rgba(255,170,64,0.14);
+    }
+
+    .pencil{
+      width:120px;height:120px;margin:auto;position:relative;transform-origin:center;animation:float 3s ease-in-out infinite;
+    }
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-8px) rotate(-2deg)}100%{transform:translateY(0)}}
+
+    /* confetti canvas full-bleed */
+    canvas.confetti{
+      position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:8;
+    }
+
+    /* small helpful tips */
+    .tips{margin-top:18px;color:#c7d2fe;font-size:14px;display:flex;gap:12px;flex-wrap:wrap}
+    .tip{background:var(--glass);padding:10px 12px;border-radius:10px;border:1px solid var(--glass-2);}
+
+    footer{margin-top:18px;color:#9aa7ff;font-size:13px}
+
+    /* subtle confetti behind text */
+    .hero-words{display:inline-block;padding:6px 10px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));backdrop-filter: blur(4px)}
+
+    /* small responsive tweaks */
+    @media (max-width:700px){
+      h1{font-size:28px}
+      .message{flex-direction:column}
+      .right{width:160px}
+      .pencil{width:96px;height:96px}
+    }
+
+    /* confetti burst animation on .pop */
+    .pop{animation:pop 0.42s cubic-bezier(.2,.9,.2,1)}
+    @keyframes pop{0%{transform:scale(0.88)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
+  </style>
+</head>
+<body>
+  <div class="card" role="main" aria-live="polite">
+    <canvas class="confetti" id="confetti"></canvas>
+    <header>
+      <div class="logo">KCSE</div>
+      <div>
+        <h1>Good luck, <span id="name">Brother</span>!</h1>
+        <p class="lead">You've prepared — now go show what you know. Wishing you calm focus and clear answers in tomorrow's KCSE.</p>
+      </div>
+      <div style="margin-left:auto;opacity:0.9;text-align:right">
+        <div id="date" style="font-weight:600">Exam: Tomorrow</div>
+        <div style="font-size:13px;color:#bcd4ff;margin-top:6px">KCSE — All the best ✨</div>
+      </div>
+    </header>
+
+    <div class="message">
+      <div class="left">
+        <div class="hero-words pop" id="messageText">Stay calm. Read every question twice. Pace yourself. You've got this!</div>
+
+        <div class="tips" aria-hidden="false">
+          <div class="tip">Breathe: 4–4–4 box breaths for 1 minute</div>
+          <div class="tip">Pocket trick: mark questions you skip and return later</div>
+          <div class="tip">Fuel: light breakfast & water</div>
+        </div>
+
+        <div style="margin-top:18px">
+          <a href="#" class="btn" id="cheer">Send a cheer</a>
+          <button id="confettiBtn" class="btn" style="margin-left:12px">Celebrate 🎉</button>
+        </div>
+      </div>
+
+      <div class="right">
+        <!-- pencil SVG animation -->
+        <div class="pencil" aria-hidden>
+          <svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="lead" x1="0" x2="1">
+                <stop offset="0" stop-color="#f7b267"/>
+                <stop offset="1" stop-color="#ffd166"/>
+              </linearGradient>
+            </defs>
+            <g>
+              <rect x="14" y="18" width="72" height="84" rx="8" fill="#ffd" opacity="0"/>
+              <path d="M16 90 L44 102 L104 42 L76 14 Z" fill="#ffd" opacity="0.06"/>
+              <rect x="18" y="24" width="12" height="68" rx="3" fill="#ffe7c4" transform="rotate(-10 24 58)" />
+              <path d="M30 20 L88 78" stroke="#ff9f1c" stroke-width="6" stroke-linecap="round" opacity="0.35"/>
+              <circle cx="92" cy="28" r="10" fill="#ffd166"/>
+              <!-- animated scribble lines -->
+              <path id="scribble" d="M22 80 q30 10 56 -20" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.9" stroke-dasharray="120" stroke-dashoffset="120">
+              </path>
+            </g>
+          </svg>
+        </div>
+        <div style="font-size:13px;margin-top:10px;color:#cbd5ff">KCSE — Believe in your preparation</div>
+      </div>
+    </div>
+
+    <footer>
+      Tip: Click <strong>Celebrate 🎉</strong> to send a burst of confetti and a short encouraging sound.
+    </footer>
+  </div>
+
+  <script>
+    // small helpers
+    const nameEl = document.getElementById('name');
+    const messageText = document.getElementById('messageText');
+    const confettiCanvas = document.getElementById('confetti');
+    const confettiBtn = document.getElementById('confettiBtn');
+
+    // allow quick customization via URL query like ?name=Ali
+    const params = new URLSearchParams(location.search);
+    const name = params.get('name') || 'Brother';
+    nameEl.textContent = decodeURIComponent(name);
+
+    // pencil scribble draw animation
+    const scribble = document.getElementById('scribble');
+    function animateScribble(){
+      scribble.style.transition = 'stroke-dashoffset 1.1s cubic-bezier(.2,.9,.2,1)';
+      scribble.style.strokeDashoffset = '0';
+      setTimeout(()=>{
+        scribble.style.transition = '';
+        scribble.style.strokeDashoffset = scribble.getTotalLength();
+      },1400);
+    }
+    animateScribble();
+    setInterval(animateScribble,4200);
+
+    // confetti implementation (lightweight)
+    const ctx = confettiCanvas.getContext('2d');
+    let width = confettiCanvas.width = confettiCanvas.offsetWidth;
+    let height = confettiCanvas.height = confettiCanvas.offsetHeight;
+
+    window.addEventListener('resize', ()=>{
+      width = confettiCanvas.width = confettiCanvas.offsetWidth;
+      height = confettiCanvas.height = confettiCanvas.offsetHeight;
+    });
+
+    function rand(min,max){return Math.random()*(max-min)+min}
+
+    function Confetto(){
+      this.x = rand(0,width);
+      this.y = rand(-height,0);
+      this.size = rand(6,14);
+      this.color = ['#ff5d8f','#ffd166','#9ae6b4','#60a5fa','#c084fc'][~~rand(0,5)];
+      this.vel = {x:rand(-0.8,0.8), y:rand(1.5,4)};
+      this.rot = rand(0,360);
+      this.spin = rand(-6,6);
+      this.ttl = rand(240,420);
+    }
+    Confetto.prototype.step = function(){
+      this.x += this.vel.x;
+      this.y += this.vel.y;
+      this.vel.y += 0.03; // gravity
+      this.rot += this.spin;
+      this.ttl--;
+    }
+    Confetto.prototype.draw = function(ctx){
+      ctx.save();
+      ctx.translate(this.x,this.y);
+      ctx.rotate(this.rot*Math.PI/180);
+      ctx.fillStyle = this.color;
+      ctx.fillRect(-this.size/2,-this.size/2,this.size,this.size);
+      ctx.restore();
+    }
+
+    let confettiPieces = [];
+    function makeConfetti(n){
+      for(let i=0;i<n;i++) confettiPieces.push(new Confetto());
+    }
+
+    function update(){
+      ctx.clearRect(0,0,width,height);
+      for(let i=confettiPieces.length-1;i>=0;i--){
+        const c = confettiPieces[i];
+        c.step();
+        c.draw(ctx);
+        if(c.y>height+30 || c.ttl<=0) confettiPieces.splice(i,1);
+      }
+      requestAnimationFrame(update);
+    }
+    update();
+
+    // start gentle confetti on load
+    makeConfetti(22);
+
+    confettiBtn.addEventListener('click', ()=>{
+      makeConfetti(120);
+      // micro feedback
+      messageText.classList.remove('pop');
+      void messageText.offsetWidth;
+      messageText.classList.add('pop');
+
+      // short encouraging sound (WebAudio)
+      try{
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type='sine'; o.frequency.value=880;
+        g.gain.value=0.0001;
+        o.connect(g); g.connect(ctx.destination);
+        o.start();
+        // gentle swell
+        g.gain.exponentialRampToValueAtTime(0.06, ctx.currentTime+0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+0.45);
+        o.stop(ctx.currentTime+0.5);
+      }catch(e){/* audio not supported */}
+    });
+
+    // quick "Share" behaviour for the Send a cheer button
+    document.getElementById('cheer').addEventListener('click', (e)=>{
+      e.preventDefault();
+      const shareText = `Good luck ${name}! KCSE — You've got this!`;
+      if(navigator.share){
+        navigator.share({title:'Good Luck',text:shareText}).catch(()=>{});
+      }else{
+        // fallback: copy to clipboard
+        navigator.clipboard?.writeText(shareText).then(()=>{
+          messageText.textContent = 'Cheer copied to clipboard — send it to them!';
+          setTimeout(()=>messageText.textContent='Stay calm. Read every question twice. Pace yourself. You\'ve got this!'},2200);
+        }).catch(()=>{
+          alert(shareText);
+        });
+      }
+    });
+
+    // small accessibility: set date text to tomorrow if user said "tomorrow" in URL ?date=tomorrow
+    const dateParam = params.get('date');
+    const dateEl = document.getElementById('date');
+    if(dateParam===null || dateParam.toLowerCase()==='tomorrow'){
+      const d = new Date(); d.setDate(d.getDate()+1);
+      dateEl.textContent = `Exam: ${d.toDateString()}`;
+    } else if(dateParam){
+      dateEl.textContent = `Exam: ${dateParam}`;
+    }
+
+    // small UX nicety: allow ?theme=cheer to change accent
+    const theme = params.get('theme');
+    if(theme==='cheer') document.documentElement.style.setProperty('--accent','#7ee787');
+
+  </script>
+</body>
+</html>
