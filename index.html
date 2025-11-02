@@ -34,7 +34,7 @@
       color: #dbeafe;
       font-size: 0.95rem;
     }
-    button, a.btn {
+    button {
       margin-top: 16px;
       display: inline-block;
       background: #ffd166;
@@ -45,9 +45,8 @@
       border-radius: 999px;
       cursor: pointer;
       transition: transform 0.15s ease;
-      text-decoration: none;
     }
-    button:hover, a.btn:hover { transform: scale(1.05); }
+    button:hover { transform: scale(1.05); }
     canvas {
       position: absolute;
       inset: 0;
@@ -75,7 +74,6 @@
 
     <div>
       <button id="confettiBtn">Celebrate 🎉</button>
-      <a href="#" class="btn" id="cheer">Send a Cheer</a>
     </div>
   </div>
 
@@ -131,20 +129,6 @@
     draw();
 
     document.getElementById("confettiBtn").onclick = () => addConfetti(100);
-
-    // // "Send a cheer" button
-    // document.getElementById("cheer").onclick = (e) => {
-    //   e.preventDefault();
-    //   const text = `Good luck ${name}! You've got this 💪`;
-    //   if (navigator.share) {
-    //     navigator.share({ title: "Good Luck!", text });
-    //   } else if (navigator.clipboard) {
-    //     navigator.clipboard.writeText(text);
-    //     alert("Copied your cheer message! 🎉");
-    //   } else {
-    //     alert(text);
-    //   }
-    // };
 
     // Light confetti background
     addConfetti(20);
