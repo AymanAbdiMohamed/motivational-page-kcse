@@ -132,19 +132,19 @@
 
     document.getElementById("confettiBtn").onclick = () => addConfetti(100);
 
-    // "Send a cheer" button
-    document.getElementById("cheer").onclick = (e) => {
-      e.preventDefault();
-      const text = `Good luck ${name}! You've got this 💪`;
-      if (navigator.share) {
-        navigator.share({ title: "Good Luck!", text });
-      } else if (navigator.clipboard) {
-        navigator.clipboard.writeText(text);
-        alert("Copied your cheer message! 🎉");
-      } else {
-        alert(text);
-      }
-    };
+    // // "Send a cheer" button
+    // document.getElementById("cheer").onclick = (e) => {
+    //   e.preventDefault();
+    //   const text = `Good luck ${name}! You've got this 💪`;
+    //   if (navigator.share) {
+    //     navigator.share({ title: "Good Luck!", text });
+    //   } else if (navigator.clipboard) {
+    //     navigator.clipboard.writeText(text);
+    //     alert("Copied your cheer message! 🎉");
+    //   } else {
+    //     alert(text);
+    //   }
+    // };
 
     // Light confetti background
     addConfetti(20);
